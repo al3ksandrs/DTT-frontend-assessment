@@ -34,7 +34,60 @@
 /*  }*/
 /*}*/
 
-#app{
-    width: 75%;
-    margin: auto;
+body{
+    margin: 0;
+}
+
+nav{
+    margin-inline: 15em;
+}
+
+#navbar-list {
+    display: flex;
+    flex-direction: row;
+}
+
+#dtt-logo {
+    width: 10em;
+    padding-right: 1em;
+}
+
+ul{
+    padding-inline: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+.navbar-item {
+    padding-inline: 1.5em;
+    align-self: center;
+}
+
+.black-text-m {
+    color: #000000;
+    font-family: 'Montserrat',serif;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar-text{
+    color: #C3C3C3;
+}
+
+.h1{
+    font-size: 32px;
+}
+
+.h2{
+    font-size: 22px;
+}
+
+button{
+   font-size: 18px;
+}
+
+.active-link {
+    color: black;
 }
