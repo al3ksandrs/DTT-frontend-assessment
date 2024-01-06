@@ -1,11 +1,42 @@
 <script>
 export default {
-  name: "Houses"
-}
+  name: "Houses",
+  data() {
+    return {
+      houses: [],
+    };
+  },
+  mounted() {
+    this.fetchHouses();
+  },
+  methods: {
+    // Get all the houses from the API and fill in the "houses" array with the information
+    async fetchHouses() {
+      try {
+        const response = await fetch("https://api.intern.d-tt.nl/api/houses", {
+          method: 'GET',
+          headers: {
+            'X-Api-Key': 'mcji3Z6OkCvB_u2RpyVD5FHf1aQbzX-n',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch houses');
+        }
+
+        this.houses = await response.json();
+        console.log(this.houses);
+      } catch (error) {
+        console.error('Error fetching houses:', error);
+      }
+    },
+  },
+};
 </script>
 
 <template>
   <div class="subcomponent">
+<!--    Houses header and "create new" button-->
     <div class="houses-top-container">
       <p class="black-text-m h1">Houses</p>
       <button class="button white-text-m">
@@ -13,6 +44,7 @@ export default {
         CREATE NEW
       </button>
     </div>
+<!--    Search bar and sort buttons-->
     <div id="search-sort-container">
       <div id="search-container">
         <img id="search-logo" src="@/assets/images/ic_search@3x.png">
@@ -27,20 +59,23 @@ export default {
         </button>
       </div>
     </div>
-    <div class="house-container">
+<!--    House container-->
+    <div class="house-container"
+         v-for="house in houses"
+         :key="houses.id">
       <div class="house-container-left">
-        <img class="house-image" src="@/assets/images/img_placeholder_house@3x.png">
+        <img class="house-image" :src="house.image" >
         <div class="house-details">
-          <p class="black-text-m h2">Stokvisstraat 132</p>
-          <p class="black-text-m">€ 500.000</p>
-          <p class="black-text-m gray normal">1011AA Amsterdam</p>
+          <p class="black-text-m h2">{{ house.location.street }} {{ house.location.houseNumber }}</p>
+          <p class="black-text-m">€ {{ house.price }}</p>
+          <p class="black-text-m gray normal">{{ house.location.zip }} {{ house.location.city }}</p>
           <div class="house-icon-container">
             <img class="small-icon" src="@/assets/images/ic_bed@3x.png">
-            <p class="small-icon-text black-text-m normal">1</p>
+            <p class="small-icon-text black-text-m normal">{{ house.rooms.bedrooms }}</p>
             <img class="small-icon" src="@/assets/images/ic_bath@3x.png">
-            <p class="small-icon-text black-text-m normal">1</p>
+            <p class="small-icon-text black-text-m normal">{{ house.rooms.bathrooms }}</p>
             <img class="small-icon" src="@/assets/images/ic_size@3x.png">
-            <p class="small-icon-text black-text-m normal">120 m2</p>
+            <p class="small-icon-text black-text-m normal">{{ house.size }} m2</p>
           </div>
         </div>
       </div>
@@ -58,10 +93,9 @@ export default {
 
 <style scoped>
 .subcomponent{
-  background-color: #E8E8E8;
-  height: 100vh;
+  background-color: #F6F6F6;
   padding-inline: 15em;
-  padding-top: 3em;
+  padding-block: 3em;
 }
 
 .white-plus{
@@ -107,7 +141,7 @@ export default {
 
 #search-container{
   display: flex;
-  background-color: #C3C3C3;
+  background-color: #E8E8E8;
   padding: 1em;
   border-radius: 15px;
   width: 25em;
@@ -142,7 +176,7 @@ export default {
   display: flex;
   justify-content: space-between;
   background-color: #FFFFFF;
-  padding: 1em;
+  padding: 1.5em;
   margin-block: 1em;
   border-radius: 15px;
 }
@@ -155,6 +189,7 @@ export default {
   width: 12em;
   aspect-ratio: 1/1;
   border-radius: 15px;
+  object-fit: cover;
 }
 
 .house-details{
