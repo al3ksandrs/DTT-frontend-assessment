@@ -4,6 +4,10 @@ export default {
   data() {
     return {
       houses: [],
+      filteredHouses: [],
+      searching: false,
+      searchInput: "",
+      searchResults: 0,
     };
   },
   mounted() {
@@ -30,6 +34,31 @@ export default {
         console.error('Error fetching houses:', error);
       }
     },
+    // Filter houses based on street, city, size, price, bedrooms and bathrooms
+    handleSearch() {
+      this.searching = true;
+      this.filteredHouses = this.houses.filter((house) => {
+        let searchRegex = new RegExp(this.searchInput, "i");
+        return (
+            searchRegex.test(house.location.street) ||
+            searchRegex.test(house.location.city) ||
+            searchRegex.test(house.size) ||
+            searchRegex.test(house.price) ||
+            searchRegex.test(house.rooms.bedroom) ||
+            searchRegex.test(house.rooms.bathroom)
+        );
+      });
+
+      // Set search result length
+      this.searchResults = this.filteredHouses.length;
+    },
+    // Clear search bar and set search result amount back to 0
+    clearSearch() {
+      this.searchInput = "";
+      this.searchResults = 0;
+      this.searching = false;
+    },
+
   },
 };
 </script>
@@ -48,7 +77,8 @@ export default {
     <div id="search-sort-container">
       <div id="search-container">
         <img id="search-logo" src="@/assets/images/ic_search@3x.png">
-        <input class="house-search" type="text" placeholder="Search for a house">
+        <input class="house-search" type="text" placeholder="Search for a house" v-model="searchInput" @input="handleSearch">
+        <button v-if="searching" class="clear-search-button" @click="clearSearch"><img class="small-icon" src="@/assets/images/ic_clear@3x.png"></button>
       </div>
       <div id="price-size-container">
         <button class="button sort-button white-text-m" id="price-button">
@@ -59,10 +89,11 @@ export default {
         </button>
       </div>
     </div>
-<!--    House container-->
+    <p class="black-text-m h2" v-if="searching"> {{ this.searchResults }} results found</p>
+<!--    House container, initially loads houses but if user starts searching it loads filteredHouses-->
     <div class="house-container"
-         v-for="house in houses"
-         :key="houses.id">
+         v-for="house in (searching ? filteredHouses : houses)"
+         :key="house.id">
       <div class="house-container-left">
         <img class="house-image" :src="house.image" >
         <div class="house-details">
@@ -94,6 +125,7 @@ export default {
 <style scoped>
 .subcomponent{
   background-color: #F6F6F6;
+  min-height: 100vh;
   padding-inline: 15em;
   padding-block: 3em;
 }
@@ -144,7 +176,6 @@ export default {
   background-color: #E8E8E8;
   padding: 1em;
   border-radius: 15px;
-  width: 25em;
 }
 
 #search-logo{
@@ -157,6 +188,7 @@ export default {
   border: none;
   outline: none;
   font-size: 22px;
+  width: 15em;
 }
 
 #price-size-container{
@@ -225,6 +257,14 @@ export default {
 
 .edit-delete-button{
   background-color: #FFFFFF;
+  align-self: center;
+  border-style: none;
+  display: flex;
+  cursor: pointer;
+}
+
+.clear-search-button{
+  background-color: #E8E8E8;
   align-self: center;
   border-style: none;
   display: flex;
