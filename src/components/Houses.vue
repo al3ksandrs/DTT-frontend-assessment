@@ -3,11 +3,14 @@ export default {
   name: "Houses",
   data() {
     return {
+      apiKey: 'mcji3Z6OkCvB_u2RpyVD5FHf1aQbzX-n',
       houses: [],
       filteredHouses: [],
       searching: false,
       searchInput: "",
       searchResults: 0,
+      sortBy: null,
+      sortDesc: true,
     };
   },
   mounted() {
@@ -20,7 +23,7 @@ export default {
         const response = await fetch("https://api.intern.d-tt.nl/api/houses", {
           method: 'GET',
           headers: {
-            'X-Api-Key': 'mcji3Z6OkCvB_u2RpyVD5FHf1aQbzX-n',
+            'X-Api-Key': this.apiKey,
           },
         });
 
@@ -29,7 +32,6 @@ export default {
         }
 
         this.houses = await response.json();
-        console.log(this.houses);
       } catch (error) {
         console.error('Error fetching houses:', error);
       }
@@ -58,6 +60,27 @@ export default {
       this.searchResults = 0;
       this.searching = false;
     },
+    // Sorting of houses based on price and size, also works if user has searched something. (sorting order is descending by default)
+    sortHouses() {
+      if(!this.searching){
+        if (this.sortBy === "price") {
+          this.houses.sort((a, b) => (this.sortDesc ? a.price - b.price : b.price - a.price));
+        } else if (this.sortBy === "size") {
+          this.houses.sort((a, b) => (this.sortDesc ? a.size - b.size : b.size - a.size));
+        }
+      } else {
+        // Sort filtered houses
+        if (this.sortBy === "price") {
+          this.filteredHouses.sort((a, b) => (this.sortDesc ? a.price - b.price : b.price - a.price));
+        } else if (this.sortBy === "size") {
+          this.filteredHouses.sort((a, b) => (this.sortDesc ? a.size - b.size : b.size - a.size));
+        }
+      }
+
+      // Change sorting order for the next click
+      this.sortDesc = !this.sortDesc;
+    },
+
 
   },
 };
@@ -81,10 +104,20 @@ export default {
         <button v-if="searching" class="clear-search-button" @click="clearSearch"><img class="small-icon" src="@/assets/images/ic_clear@3x.png"></button>
       </div>
       <div id="price-size-container">
-        <button class="button sort-button white-text-m" id="price-button">
+        <button
+            id="price-button"
+            class="button sort-button white-text-m not-active-button"
+            :class="{ 'active-button': sortBy === 'price' }"
+            @click="sortBy = 'price'; sortHouses()"
+        >
           Price
         </button>
-        <button class="button sort-button white-text-m NON_ACTIVE_BUTTON" id="size-button">
+        <button
+            id="size-button"
+            class="button sort-button white-text-m not-active-button"
+            :class="{ 'active-button': sortBy === 'size' }"
+            @click="sortBy = 'size'; sortHouses()"
+        >
           Size
         </button>
       </div>
@@ -195,8 +228,12 @@ export default {
   display: flex;
 }
 
-.NON_ACTIVE_BUTTON{
+.not-active-button{
   background-color: #C3C3C3;
+}
+
+.active-button{
+  background-color: #EB5440;
 }
 
 #search-sort-container{
