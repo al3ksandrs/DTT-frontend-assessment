@@ -24,6 +24,10 @@ li {
     list-style-type: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 .navbar-item {
     padding-inline: 1.5em;
     align-self: center;
@@ -55,3 +59,156 @@ button{
 .active-link {
     color: black;
 }
+
+.subcomponent{
+    background-color: #F6F6F6;
+    min-height: 100vh;
+    padding-inline: 15em;
+    padding-block: 3em;
+}
+
+.white-plus{
+    width: 1.5em;
+    padding-right: 1em;
+}
+
+.houses-top-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.button{
+    align-self: center;
+    background-color: #EB5440;
+    height: 3em;
+    padding: 1em;
+    border-style: none;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sort-button{
+    width: 10em;
+}
+
+#price-button{
+    border-radius: 15px 0 0 15px;
+}
+
+#size-button{
+    border-radius: 0 15px 15px 0;
+}
+
+.white-text-m{
+    color: #FFFFFF;
+    font-family: 'Montserrat',serif;
+    font-weight: bold;
+}
+
+#search-container{
+    display: flex;
+    background-color: #E8E8E8;
+    padding: 1em;
+    border-radius: 15px;
+}
+
+#search-logo{
+    width: 2em;
+    padding-right: 1em;
+}
+
+.house-search{
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 22px;
+    width: 15em;
+}
+
+#price-size-container{
+    display: flex;
+}
+
+.not-active-button{
+    background-color: #C3C3C3;
+}
+
+.active-button{
+    background-color: #EB5440;
+}
+
+#search-sort-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.house-container{
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 1.5em;
+    margin-block: 1em;
+    border-radius: 15px;
+}
+
+.house-container-left{
+    display: flex;
+}
+
+.house-image{
+    width: 12em;
+    aspect-ratio: 1/1;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.house-details{
+    padding-left: 1em;
+}
+
+.small-icon{
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.house-icon-container{
+    display: flex;
+    align-items: center;
+}
+
+.small-icon-text{
+    padding-inline: 1em;
+}
+
+.gray{
+    color: #C3C3C3;
+}
+
+.normal{
+    font-weight: normal;
+}
+
+.edit-delete-container{
+    display: flex;
+    height: 2em;
+}
+
+.edit-delete-button{
+    background-color: #FFFFFF;
+    align-self: center;
+    border-style: none;
+    display: flex;
+    cursor: pointer;
+}
+
+.clear-search-button{
+    background-color: #E8E8E8;
+    align-self: center;
+    border-style: none;
+    display: flex;
+    cursor: pointer;
+}
+
