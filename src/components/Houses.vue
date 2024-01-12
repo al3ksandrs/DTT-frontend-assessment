@@ -1,9 +1,11 @@
 <script>
+import {useAPIkeyStore} from "@/stores/APIkey.js";
+
 export default {
   name: "Houses",
   data() {
     return {
-      apiKey: 'mcji3Z6OkCvB_u2RpyVD5FHf1aQbzX-n',
+      apiKey: useAPIkeyStore().APIkey,
       houses: [],
       filteredHouses: [],
       searching: false,
