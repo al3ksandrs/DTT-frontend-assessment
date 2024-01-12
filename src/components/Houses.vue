@@ -91,10 +91,12 @@ export default {
     <!--    Houses header and "create new" button-->
     <div class="houses-top-container">
       <p class="black-text-m h1">Houses</p>
-      <button class="button white-text-m">
-        <img class="white-plus" src="@/assets/images/ic_plus_white@3x.png" alt="white plus">
-        CREATE NEW
-      </button>
+      <router-link to="/add-listing">
+        <button class="button white-text-m">
+          <img class="white-plus" src="@/assets/images/ic_plus_white@3x.png" alt="white plus">
+          CREATE NEW
+        </button>
+      </router-link>
     </div>
     <!--    Search bar and sort buttons-->
     <div id="search-sort-container">

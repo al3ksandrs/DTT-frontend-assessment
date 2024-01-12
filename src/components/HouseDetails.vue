@@ -93,7 +93,7 @@ export default {
           </div>
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_size@3x.png">
-            <p class="black-text-m dark-gray">{{ this.size }}</p>
+            <p class="black-text-m dark-gray">{{ this.size }} m2</p>
           </div>
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_construction_date@3x.png">
@@ -126,62 +126,4 @@ a{
   display: inline-block;
 }
 
-.row{
-  display: flex;
-  flex-direction: row;
-}
-
-#detail-padding{
-  padding-top: 1em;
-}
-
-.dark-gray{
-  color: #4A4B4C;
-}
-
-.no-margin{
-  margin: 0;
-}
-
-.back-to-container {
-  display: flex;
-  text-decoration: none;
-  padding-bottom: 1.5em;
-}
-
-.back-icon {
-  padding-right: 1.5em;
-  align-self: center;
-}
-
-.detail-icon{
-  height: 1.5em;
-  width: 1.5em;
-  align-self: center;
-  padding-right: 1em;
-}
-
-.house-full-image{
-  width: 55em;
-}
-
-.house-details-info{
-  background-color: #FFFFFF;
-  max-width: 51em;
-  padding: 2em;
-}
-
-.row-container{
-  display: flex;
-  justify-content: space-between;
-  width: 45%;
-}
-
-.second-row-container{
-  width: 30%;
-}
-
-#street-delete-edit{
-  justify-content: space-between;
-}
 </style>

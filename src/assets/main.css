@@ -212,3 +212,127 @@ button{
     cursor: pointer;
 }
 
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+#detail-padding{
+    padding-top: 1em;
+}
+
+.dark-gray{
+    color: #4A4B4C;
+}
+
+.no-margin{
+    margin: 0;
+}
+
+.back-to-container {
+    display: flex;
+    text-decoration: none;
+    padding-bottom: 1.5em;
+}
+
+.back-icon {
+    padding-right: 1.5em;
+    align-self: center;
+}
+
+.detail-icon{
+    height: 1.5em;
+    width: 1.5em;
+    align-self: center;
+    padding-right: 1em;
+}
+
+.house-full-image{
+    width: 55em;
+}
+
+.house-details-info{
+    background-color: #FFFFFF;
+    max-width: 51em;
+    padding: 2em;
+}
+
+.row-container{
+    display: flex;
+    justify-content: space-between;
+    width: 45%;
+}
+
+.second-row-container{
+    width: 30%;
+}
+
+#street-delete-edit{
+    justify-content: space-between;
+}
+
+.long-input{
+    width: 30em;
+}
+
+.short-input{
+    width: 12em;
+}
+
+#image-upload{
+    height: 7em;
+    width: 7em;
+    cursor: pointer;
+}
+
+#image-upload-icon{
+    width: 2em;
+    height: 2em;
+}
+
+.upload-button{
+    width: 13em;
+    margin-left: 11.5em;
+    margin-block: 1em;
+}
+
+.error-message{
+    background-color: #EB5440;
+    color: white;
+    padding: 1.5em;
+    border-radius: 10px;
+}
+
+.image-upload-container{
+    height: 7em;
+    width: 7em;
+    border-style: dashed;
+    display: flex;
+}
+
+.image-upload-label{
+    height: 7em;
+    width: 7em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.small-icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-style: none;
+    cursor: pointer;
+    position: absolute;
+    left: 20em;
+    bottom: 7.5em;
+}
+
+.image-preview{
+    width: 10em;
+    height: 10em;
+    border-radius: 10px;
+}
