@@ -1,19 +1,31 @@
 <script>
-import {useAPIkeyStore} from "@/stores/APIkey.js";
+import {useAPIkeyStore} from "@/stores/apiKey.js";
+import {useHousesStore} from "@/stores/HousesStore.js";
+import {deleteHouse, fetchHouses} from "@/services/apiService.js";
+import {router} from "@/index.js";
+import DeletionConfirmation from "@/components/DeletionConfirmation.vue";
 
 export default {
   name: "Houses",
+  components: {DeletionConfirmation},
   data() {
     return {
       apiKey: useAPIkeyStore().APIkey,
-      houses: [],
       filteredHouses: [],
       searching: false,
       searchInput: "",
       searchResults: 0,
       sortBy: null,
       sortDesc: true,
+
+      houseToDeleteId: null,
+      isDeletionConfirmationVisible: false,
     };
+  },
+  computed: {
+    houses() {
+      return useHousesStore().houses;
+    }
   },
   mounted() {
     this.fetchHouses();
@@ -22,18 +34,8 @@ export default {
     // Get all the houses from the API and fill in the "houses" array with the information
     async fetchHouses() {
       try {
-        const response = await fetch("https://api.intern.d-tt.nl/api/houses", {
-          method: 'GET',
-          headers: {
-            'X-Api-Key': this.apiKey,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch houses');
-        }
-
-        this.houses = await response.json();
+        const houses = await fetchHouses(this.apiKey);
+        useHousesStore().setHouses(houses);
       } catch (error) {
         console.error('Error fetching houses:', error);
       }
@@ -82,8 +84,22 @@ export default {
       // Change sorting order for the next click
       this.sortDesc = !this.sortDesc;
     },
+    // Open the deletion confirmation and pass the listing ID to houseToDeleteID.
+    openDeletionConfirmation(houseId) {
+      this.houseToDeleteId = houseId;
+      this.isDeletionConfirmationVisible = true;
+    },
+    // Deletion of a listing
+    async deleteHouse(houseId) {
+      try {
+        await deleteHouse(this.apiKey, houseId);
 
-
+        // Refresh list after a deletion
+        await this.fetchHouses()
+      } catch (error) {
+        console.error('Error deleting house:', error);
+      }
+    }
   },
 };
 </script>
@@ -140,7 +156,7 @@ export default {
         <div class="house-container-left">
           <img class="house-image" :src="house.image">
           <div class="house-details">
-            <p class="black-text-m h2">{{ house.location.street }} {{ house.location.houseNumber }}</p>
+            <p class="black-text-m h2">{{ house.location.street }} {{ house.location.houseNumber }}{{ house.location.houseNumberAddition }}</p>
             <p class="black-text-m">€ {{ house.price }}</p>
             <p class="black-text-m gray normal">{{ house.location.zip }} {{ house.location.city }}</p>
             <div class="house-icon-container">
@@ -154,15 +170,21 @@ export default {
           </div>
         </div>
         <div class="edit-delete-container">
-          <button class="edit-delete-button">
-            <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
-          </button>
-          <button class="edit-delete-button">
-            <img class="small-icon" src="@/assets/images/ic_delete@3x.png">
-          </button>
+          <router-link :to="'/edit-listing/' + house.id">
+            <button v-if="house.madeByMe" class="edit-delete-button">
+              <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
+            </button>
+          </router-link>
+          <router-link to="">
+            <button @click="openDeletionConfirmation(house.id)" v-if="house.madeByMe" class="edit-delete-button">
+              <img class="small-icon" src="@/assets/images/ic_delete@3x.png">
+            </button>
+
+          </router-link>
         </div>
       </div>
     </router-link>
+    <deletion-confirmation v-if="isDeletionConfirmationVisible" @close="isDeletionConfirmationVisible = false" @confirm="deleteHouse(houseToDeleteId)"></deletion-confirmation>
   </div>
 </template>
 

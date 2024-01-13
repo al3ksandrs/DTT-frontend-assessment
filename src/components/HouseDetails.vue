@@ -1,7 +1,12 @@
 <script>
-import {useAPIkeyStore} from "@/stores/APIkey.js";
+import {useAPIkeyStore} from "@/stores/apiKey.js";
+import {fetchHouseDetails, deleteHouse} from "@/services/apiService.js";
+import DeletionConfirmation from "@/components/DeletionConfirmation.vue";
+import {router} from "@/index.js";
+
 export default {
   name: "HouseDetails",
+  components: {DeletionConfirmation},
   data() {
     return {
       apiKey: useAPIkeyStore().APIkey,
@@ -9,6 +14,7 @@ export default {
       house: {},
       street: "",
       streetNumber: 0,
+      addition: "",
       zip: "",
       city: "",
       price: 0,
@@ -18,6 +24,9 @@ export default {
       bathrooms: 0,
       hasGarage: false,
       description: "",
+      madeByMe: false,
+
+      isDeletionConfirmationVisisble: false,
     };
   },
   mounted() {
@@ -27,23 +36,12 @@ export default {
     async fetchHouseDetails() {
       try {
         const houseId = this.$route.params.id;
-        const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${houseId}`, {
-          method: 'GET',
-          headers: {
-            'X-Api-Key': this.apiKey,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch house details');
-        }
-
-        // Needed to specify the position of house in the array since the GET request returns a single object array instead of only the object.
-        this.house = (await response.json())[0];
+        this.house = await fetchHouseDetails(this.apiKey, houseId);
 
         // Set house properties
         this.street = this.house.location.street;
         this.streetNumber = this.house.location.houseNumber;
+        this.addition = this.house.location.houseNumberAddition;
         this.zip = this.house.location.zip;
         this.city = this.house.location.city;
         this.price = this.house.price;
@@ -53,8 +51,21 @@ export default {
         this.bathrooms = this.house.rooms.bathrooms;
         this.hasGarage = this.house.hasGarage;
         this.description = this.house.description;
+        this.madeByMe = this.house.madeByMe;
+
       } catch (error) {
         console.error('Error fetching house details:', error);
+      }
+    },
+    async deleteHouse() {
+      try {
+        const houseId = this.$route.params.id;
+        await deleteHouse(this.apiKey, houseId);
+
+        // Redirect user back to houses after deletion
+        await router.push({name: 'Houses'});
+      } catch (error) {
+        console.error('Error deleting house:', error);
       }
     },
   },
@@ -74,12 +85,14 @@ export default {
       <img class="house-full-image" :src="house.image">
       <div class="house-details-info">
         <div class="row" id="street-delete-edit">
-          <p class="black-text-m h1 no-margin">{{this.street}} {{ this.streetNumber }}</p>
+          <p class="black-text-m h1 no-margin">{{ this.street }} {{ this.streetNumber }}{{ this.addition }}</p>
           <div class="edit-delete-container">
-            <button class="edit-delete-button">
-              <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
-            </button>
-            <button class="edit-delete-button">
+            <router-link :to="'/edit-listing/' + house.id">
+              <button v-if="madeByMe" class="edit-delete-button">
+                <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
+              </button>
+            </router-link>
+            <button v-if="madeByMe" @click="isDeletionConfirmationVisisble = true" class="edit-delete-button">
               <img class="small-icon" src="@/assets/images/ic_delete@3x.png">
             </button>
           </div>
@@ -120,11 +133,13 @@ export default {
       </div>
     </div>
   </div>
+  <deletion-confirmation v-if="isDeletionConfirmationVisisble" @close="isDeletionConfirmationVisisble = false"
+                         @confirm="deleteHouse"></deletion-confirmation>
 </template>
 
 <style scoped>
 /*Resizing of back to button to not cover the width of the component*/
-a{
+a {
   display: inline-block;
 }
 

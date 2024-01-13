@@ -1,17 +1,19 @@
 <script>
 import {router} from "@/index.js";
 import {useAPIkeyStore} from "@/stores/apiKey.js";
-import { createHouse, uploadImage } from "@/services/apiService.js";
+import {editHouse, fetchHouseDetails, uploadImage} from "@/services/apiService.js";
 
 export default {
-  name: "NewListing",
+  name: "EditListing",
   data() {
     return {
       apiKey: useAPIkeyStore().APIkey,
+      listingID: this.$route.params.id,
 
+      id: null,
       streetName: null,
       houseNumber: null,
-      addition: "",
+      addition: null,
       postalCode: null,
       city: null,
       image: null,
@@ -25,15 +27,44 @@ export default {
 
       imagePreview: null,
       isFormValid: true,
-      isShowingPreviewImage: false,
+      isShowingPreviewImage: true,
       minConstructionYear: 1950,
       // Current year as max construction year
       maxConstructionYear: new Date().getFullYear(),
     };
   },
+  mounted() {
+    this.fetchHouseDetails();
+  },
   methods: {
-    // Fill in the formData and upload the new house to the backend
-    async createHouse() {
+    // Fetch house's details
+    async fetchHouseDetails() {
+      try {
+        this.house = await fetchHouseDetails(this.apiKey, this.listingID);
+
+        // Set house properties
+        this.id = this.house.id;
+        this.streetName = this.house.location.street;
+        this.houseNumber = this.house.location.houseNumber;
+        this.addition = this.house.location.houseNumberAddition;
+        this.postalCode = this.house.location.zip;
+        this.city = this.house.location.city;
+        this.image = this.house.image;
+        this.imagePreview = this.house.image;
+        this.price = this.house.price;
+        this.size = this.house.size;
+        this.constructionYear = this.house.constructionYear;
+        this.bedrooms = this.house.rooms.bedrooms;
+        this.bathrooms = this.house.rooms.bathrooms;
+        this.garage = this.house.hasGarage;
+        this.description = this.house.description;
+
+      } catch (error) {
+        console.error('Error fetching house details:', error);
+      }
+    },
+    // Fill in the formData and upload the edited house to the backend
+    async editHouse() {
       try {
         let formData = new FormData();
         formData.append('price', this.price);
@@ -49,17 +80,12 @@ export default {
         formData.append('hasGarage', this.garage);
         formData.append('description', this.description);
 
-        const createdHouse = await createHouse(this.apiKey, formData);
-
-        // Upload image using the new house's id
-        await this.uploadImage(createdHouse.id);
-
-        // Redirect user to new listing
-        router.push({ name: 'House details', params: { id: createdHouse.id } });
+        // Upload image using the house's id
+        await this.uploadImage(this.listingID);
+        await editHouse(this.apiKey, this.listingID, formData);
 
       } catch (error) {
         console.error(error);
-        this.isFormValid = false
       }
     },
     // Upload the image to the new house's ID
@@ -85,26 +111,26 @@ export default {
       reader.readAsDataURL(this.image);
     },
     // Revert image back to null
-    revertImageUpload(){
+    revertImageUpload() {
       this.image = null;
       this.isShowingPreviewImage = false;
     },
     // Validation check for the form
-    async validationCheck(){
-      if(!this.streetName || !this.houseNumber || !this.postalCode ||
+    async validationCheck() {
+      if (!this.streetName || !this.houseNumber || !this.postalCode ||
           !this.city || !this.price || !this.size ||
           !this.garage || !this.bedrooms || !this.bathrooms ||
           !this.constructionYear || !this.description ||
           this.constructionYear < this.minConstructionYear ||
           this.constructionYear > this.maxConstructionYear ||
           !this.image
-      ){
+      ) {
         this.isFormValid = false
         return
       } else this.isFormValid = true
 
       // If validation passes the creation of the house proceeds
-      await this.createHouse()
+      await this.editHouse()
     }
   }
 }
@@ -112,13 +138,13 @@ export default {
 
 <template>
   <div class="subcomponent">
-    <router-link to="/houses">
+    <router-link :to="'/house-details/' + listingID">
       <div class="back-to-container">
         <img class="small-icon back-icon" src="@/assets/images/ic_back_grey@3x.png">
-        <p class="black-text-m">Back to overview</p>
+        <p class="black-text-m">Back to detail page</p>
       </div>
     </router-link>
-    <p class="black-text-m h1">Create new listing</p>
+    <p class="black-text-m h1">Edit listing</p>
     <form @submit.prevent="validationCheck">
       <div>
         <p class="black-text-m">Street name*</p>
@@ -152,7 +178,8 @@ export default {
         </div>
         <div v-if="isShowingPreviewImage">
           <img :src=imagePreview class="image-preview">
-          <button @click="revertImageUpload" class="small-icon small-icon-container"><img src="@/assets/images/ic_clear_white@3x.png" class="small-icon"></button>
+          <button @click="revertImageUpload" class="small-icon small-icon-container"><img
+              src="@/assets/images/ic_clear_white@3x.png" class="small-icon"></button>
         </div>
       </div>
       <div>
@@ -167,7 +194,6 @@ export default {
         <div>
           <p class="black-text-m">Garage*</p>
           <select v-model="garage">
-            <option disabled selected value="false">Select</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
@@ -191,7 +217,7 @@ export default {
         <p class="black-text-m">Description*</p>
         <textarea v-model="description" placeholder="Enter description"></textarea>
       </div>
-      <button type="submit" class="button white-text-m upload-button">Post</button>
+      <button type="submit" class="button white-text-m upload-button">Save</button>
       <p v-if="!isFormValid" class="black-text-m error-message">Please fill in all fields correctly</p>
     </form>
   </div>
@@ -199,33 +225,33 @@ export default {
 
 <style scoped>
 /*Resizing of back to button to not cover the width of the component*/
-a{
+a {
   display: inline-block;
 }
 
-.row{
+.row {
   justify-content: space-between;
   width: 27.5em;
 }
 
-.small-icon{
+.small-icon {
   width: 2em;
   height: 2em;
 }
 
-.subcomponent{
+.subcomponent {
   background-image: url("@/assets/images/img_background@3x.png");
   background-size: cover;
   background-color: unset;
 }
 
-input{
+input {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
 }
 
-textarea{
+textarea {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
@@ -234,7 +260,7 @@ textarea{
   resize: none;
 }
 
-select{
+select {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
@@ -242,11 +268,11 @@ select{
   color: rgb(128, 128, 128);
 }
 
-form{
+form {
   max-width: 27.5em;
 }
 
-option{
+option {
   color: black;
 }
 
