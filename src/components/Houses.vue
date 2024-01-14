@@ -110,19 +110,24 @@ export default {
     <div class="houses-top-container">
       <p class="black-text-m h1">Houses</p>
       <router-link to="/add-listing">
-        <button class="button white-text-m">
-          <img class="white-plus" src="@/assets/images/ic_plus_white@3x.png" alt="white plus">
+        <button class="button white-text-m pc-button">
+          <img class="white-plus" src="@/assets/images/ic_plus_white@3x.png" alt="New listing">
           CREATE NEW
         </button>
       </router-link>
     </div>
+    <router-link to="/add-listing">
+      <button class="mobile-button">
+        <img class="gray-plus" src="@/assets/images/ic_plus_grey@3x.png" alt="New listing">
+      </button>
+    </router-link>
     <!--    Search bar and sort buttons-->
     <div id="search-sort-container">
       <div id="search-container">
         <img id="search-logo" src="@/assets/images/ic_search@3x.png">
         <input class="house-search" type="text" placeholder="Search for a house" v-model="searchInput"
                @input="handleSearch">
-        <button v-if="searching" class="clear-search-button" @click="clearSearch"><img class="small-icon"
+        <button v-if="searching" class="clear-search-button" @click="clearSearch"><img class="small-icon clear-search-icon"
                                                                                        src="@/assets/images/ic_clear@3x.png">
         </button>
       </div>
@@ -145,7 +150,7 @@ export default {
         </button>
       </div>
     </div>
-    <p class="black-text-m h2" v-if="searching"> {{ this.searchResults }} results found</p>
+    <p class="black-text-m h2 result-text" v-if="searching"> {{ this.searchResults }} results found</p>
     <!--    House container, initially loads houses but if user starts searching it loads filteredHouses-->
     <router-link
         v-for="house in (searching ? filteredHouses : houses)"
@@ -156,37 +161,45 @@ export default {
         <div class="house-container-left">
           <img class="house-image" :src="house.image">
           <div class="house-details">
-            <p class="black-text-m h2">{{ house.location.street }} {{ house.location.houseNumber }}{{ house.location.houseNumberAddition }}</p>
-            <p class="black-text-m">€ {{ house.price }}</p>
-            <p class="black-text-m gray normal">{{ house.location.zip }} {{ house.location.city }}</p>
+            <p class="black-text-m h2">{{ house.location.street }} {{
+                house.location.houseNumber
+              }}{{ house.location.houseNumberAddition }}</p>
+            <p class="black-text-m house-detail-text house-price">€ {{ house.price }}</p>
+            <p class="black-text-m gray normal house-detail-text">{{ house.location.zip }} {{ house.location.city }}</p>
             <div class="house-icon-container">
               <img class="small-icon" src="@/assets/images/ic_bed@3x.png">
-              <p class="small-icon-text black-text-m normal">{{ house.rooms.bedrooms }}</p>
+              <p class="small-icon-text black-text-m normal house-detail-text">{{ house.rooms.bedrooms }}</p>
               <img class="small-icon" src="@/assets/images/ic_bath@3x.png">
-              <p class="small-icon-text black-text-m normal">{{ house.rooms.bathrooms }}</p>
+              <p class="small-icon-text black-text-m normal house-detail-text">{{ house.rooms.bathrooms }}</p>
               <img class="small-icon" src="@/assets/images/ic_size@3x.png">
-              <p class="small-icon-text black-text-m normal">{{ house.size }} m2</p>
+              <p class="small-icon-text black-text-m normal house-detail-text">{{ house.size }} m2</p>
             </div>
           </div>
         </div>
         <div class="edit-delete-container">
           <router-link :to="'/edit-listing/' + house.id">
             <button v-if="house.madeByMe" class="edit-delete-button">
-              <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
+              <img class="small-icon edit-delete-icon" src="@/assets/images/ic_edit@3x.png">
             </button>
           </router-link>
           <router-link to="">
             <button @click="openDeletionConfirmation(house.id)" v-if="house.madeByMe" class="edit-delete-button">
-              <img class="small-icon" src="@/assets/images/ic_delete@3x.png">
+              <img class="small-icon edit-delete-icon" src="@/assets/images/ic_delete@3x.png">
             </button>
 
           </router-link>
         </div>
       </div>
     </router-link>
-    <deletion-confirmation v-if="isDeletionConfirmationVisible" @close="isDeletionConfirmationVisible = false" @confirm="deleteHouse(houseToDeleteId)"></deletion-confirmation>
+    <deletion-confirmation v-if="isDeletionConfirmationVisible" @close="isDeletionConfirmationVisible = false"
+                           @confirm="deleteHouse(houseToDeleteId)"></deletion-confirmation>
   </div>
 </template>
 
 <style scoped>
+
+a{
+  align-self: center;
+}
+
 </style>

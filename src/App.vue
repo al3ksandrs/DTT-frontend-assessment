@@ -1,6 +1,7 @@
 <script setup>
 
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "@/components/navbars/Navbar.vue";
+import MobileNavbar from "@/components/navbars/MobileNavbar.vue";
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import Navbar from "@/components/Navbar.vue";
   </head>
   <Navbar></Navbar>
   <router-view></router-view>
+  <MobileNavbar></MobileNavbar>
 </template>
 
 <style scoped>

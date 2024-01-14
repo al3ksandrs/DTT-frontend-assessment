@@ -26,41 +26,4 @@ export default {
 </template>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.delete-confirmation {
-  background: white;
-  padding: 3em;
-  padding-inline: 10em;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-.delete-button{
-  width: 20em;
-  margin-block: 2em;
-}
-
-.confirmation-container{
-  display: flex;
-  flex-direction: column;
-
-}
-
-.go-back-button{
-  width: 20em;
-  background-color: #4A4B4C;
-}
 </style>

@@ -140,11 +140,11 @@ export default {
   <div class="subcomponent">
     <router-link :to="'/house-details/' + listingID">
       <div class="back-to-container">
-        <img class="small-icon back-icon" src="@/assets/images/ic_back_grey@3x.png">
+        <img class="small-icon back-icon" src="../assets/images/ic_back_grey@3x.png">
         <p class="black-text-m">Back to detail page</p>
       </div>
     </router-link>
-    <p class="black-text-m h1">Edit listing</p>
+    <p class="black-text-m h1 create-new-listing-text">Edit listing</p>
     <form @submit.prevent="validationCheck">
       <div>
         <p class="black-text-m">Street name*</p>
@@ -173,13 +173,13 @@ export default {
         <div v-if="!isShowingPreviewImage" class="image-upload-container">
           <input @change="handleImageUpload" type="file" id="image-upload" accept="image/png, image/jpeg" hidden>
           <label for="image-upload" class="image-upload-label">
-            <img src="@/assets/images/ic_upload@3x.png" id="image-upload-icon">
+            <img src="../assets/images/ic_upload@3x.png" id="image-upload-icon">
           </label>
         </div>
-        <div v-if="isShowingPreviewImage">
+        <div class="image-preview-container" v-if="isShowingPreviewImage">
           <img :src=imagePreview class="image-preview">
           <button @click="revertImageUpload" class="small-icon small-icon-container"><img
-              src="@/assets/images/ic_clear_white@3x.png" class="small-icon"></button>
+              src="../assets/images/ic_clear_white@3x.png" class="small-icon"></button>
         </div>
       </div>
       <div>
@@ -274,6 +274,50 @@ form {
 
 option {
   color: black;
+}
+
+.image-preview-container{
+  width: 10em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.small-icon-container{
+  float: right;
+  position: absolute;
+  margin: 5px;
+}
+
+@media only screen and (max-width: 425px) {
+  .row {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .long-input{
+    width: 90%;
+  }
+
+  .short-input {
+    width: 100%;
+  }
+
+  select {
+    width: 93vw;
+  }
+
+  textarea {
+    width: 90%;
+  }
+
+  .black-text-m {
+    margin-block: 1em;
+  }
+
+  .create-new-listing-text {
+    margin-bottom: 2em;
+    text-align: center;
+  }
 }
 
 </style>

@@ -163,6 +163,7 @@ button{
     aspect-ratio: 1/1;
     border-radius: 15px;
     object-fit: cover;
+    align-self: center;
 }
 
 .house-details{
@@ -244,7 +245,10 @@ button{
     height: 1.5em;
     width: 1.5em;
     align-self: center;
-    padding-right: 1em;
+}
+
+.inline-padding{
+    padding-inline: 1em;
 }
 
 .house-full-image{
@@ -260,7 +264,7 @@ button{
 .row-container{
     display: flex;
     justify-content: space-between;
-    width: 45%;
+    width: 55%;
 }
 
 .second-row-container{
@@ -326,13 +330,371 @@ button{
     background-color: transparent;
     border-style: none;
     cursor: pointer;
-    position: absolute;
-    left: 20em;
-    bottom: 7.5em;
 }
 
 .image-preview{
     width: 10em;
     height: 10em;
     border-radius: 10px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.delete-confirmation {
+    background: white;
+    padding: 3em;
+    padding-inline: 10em;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.delete-button{
+    width: 20em;
+    margin-block: 2em;
+}
+
+.confirmation-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.go-back-button{
+    width: 20em;
+    background-color: #4A4B4C;
+}
+
+.mobile-navbar-container{
+    display: none;
+    vertical-align: bottom;
+    height: 70px;
+    background-color: #ffffff;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -3px 10px 0 #d2d2d2;
+}
+
+.mobile-button{
+    display: none;
+    width: 2em;
+    height: 2em;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    background-color: transparent;
+    position: absolute;
+    top: 1.75em;
+    right: 1.5em;
+    cursor: pointer;
+}
+
+.gray-plus{
+    width: 2em;
+    height: 2em;
+}
+
+.back-edit-delete-mobile-container{
+    display: none;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+}
+
+.mobile-icon-container{
+    display: flex;
+    width: 2em;
+    height: 2em;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 3em;
+    padding-block: 4em;
+}
+
+.edit-delete-container-mobile{
+    display: flex;
+}
+
+ /*RESPONSIVENESS*/
+
+@media only screen and (max-width: 1300px) {
+    .subcomponent{
+        padding-inline: 3em;
+    }
+
+    nav{
+        margin-inline: 3em;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #search-sort-container{
+        flex-direction: column;
+    }
+
+    #price-size-container{
+        align-self: flex-end;
+        padding-top: 1em;
+    }
+
+    .house-search{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 650px){
+    .house-image{
+        width: 9em;
+        height: 9em;
+    }
+
+    .h2{
+        margin: 0;
+    }
+
+    .house-container{
+        padding: 1em;
+    }
+
+    .small-icon-text{
+        padding-inline: 0.5em;
+    }
+}
+
+@media only screen and (max-width: 550px){
+    .subcomponent{
+        padding-inline: 1em;
+    }
+
+    #price-size-container{
+        align-self: center;
+    }
+
+    nav{
+        margin-inline: 1em;
+    }
+
+    .sort-button{
+        width: 46vw;
+    }
+
+    .normal{
+        margin: 0;
+        margin-block: 1em;
+    }
+
+    .h2{
+        font-size: 19px;
+    }
+}
+
+@media only screen and (max-width: 450px){
+    .house-image{
+        width: 7em;
+        height: 7em;
+    }
+}
+
+/*MOBILE VERSION*/
+
+@media only screen and (max-width: 425px){
+    .mobile-navbar-container{
+        display: block;
+    }
+
+    #mobile-navbar-list{
+        display: flex;
+        padding-top: 0.5em;
+        justify-content: space-around;
+    }
+
+    nav{
+        margin: 0;
+    }
+
+    #navbar-list{
+        display: none;
+    }
+
+    .houses-top-container{
+        justify-content: center;
+        padding-block: 1em;
+    }
+
+    .subcomponent{
+        padding-block: 0;
+        padding-bottom: 5em;
+    }
+
+    .pc-button{
+        display: none;
+    }
+
+    .mobile-button{
+        display: flex;
+    }
+
+    .h1{
+        font-size: 18px;
+    }
+
+    .h2{
+        font-size: 14px;
+    }
+
+    button{
+        font-size: 12px;
+    }
+
+    #search-container{
+        padding: 0.5em;
+        border-radius: 10px;
+    }
+
+    #search-logo{
+        width: 1em;
+        height: 1em;
+        align-self: center;
+        padding-inline: 1em;
+    }
+
+    .house-search{
+        font-size: 14px;
+    }
+
+    #size-button{
+        padding: 1.7em;
+        border-radius: 0 10px 10px 0;
+    }
+
+    #price-button{
+        padding: 1.7em;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .black-text-m{
+        margin: 5px;
+    }
+
+    .house-detail-text{
+        font-size: 14px;
+    }
+
+    .small-icon{
+        width: 1em;
+        height: 1em;
+    }
+
+    .house-image{
+        height: 6.5em;
+        width: 6.5em;
+        border-radius: 10px;
+    }
+
+    .edit-delete-icon{
+        width: 1.3em;
+        height: 1.3em;
+    }
+
+    .house-price{
+        font-weight: normal;
+    }
+
+    .house-container{
+        border-radius: 10px;
+    }
+
+    .mobile-navbar-icon{
+        width: 2em;
+    }
+
+    .result-text{
+        padding-block: 1em;
+    }
+
+    .clear-search-icon{
+        height: 1.5em;
+        width: 1.5em;
+    }
+
+    /*DELETION CONFIRMATION*/
+
+    .delete-confirmation{
+        padding-inline: 0;
+        width: 90%;
+    }
+
+    .delete-button{
+        border-radius: 10px;
+    }
+
+    .go-back-button{
+        border-radius: 10px;
+    }
+
+    /*ADD LISTING*/
+
+    .long-input{
+        width: 90%;
+    }
+
+    .short-input{
+        width: 10.5em
+    }
+
+    .upload-button{
+        width: 100%;
+        padding-block: 2em;
+        margin: 0;
+        margin-block: 2em;
+        border-radius: 10px;
+    }
+
+    /*LISTING DETAILS*/
+
+    .back-edit-delete-mobile-container{
+        display: flex;
+    }
+}
+
+@media only screen and (max-width: 385px){
+    .house-container{
+        flex-direction: column;
+    }
+
+    .house-container-left{
+        flex-direction: column;
+    }
+
+    .house-image{
+        height: 7em;
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
+    .edit-delete-container{
+        justify-content: space-evenly;
+        margin-top: 0.5em;
+    }
+
+    .edit-delete-icon{
+        height: 2em;
+        width: 2em;
+    }
 }

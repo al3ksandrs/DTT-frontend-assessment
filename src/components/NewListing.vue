@@ -1,7 +1,7 @@
 <script>
 import {router} from "@/index.js";
 import {useAPIkeyStore} from "@/stores/apiKey.js";
-import { createHouse, uploadImage } from "@/services/apiService.js";
+import {createHouse, uploadImage} from "@/services/apiService.js";
 
 export default {
   name: "NewListing",
@@ -55,7 +55,7 @@ export default {
         await this.uploadImage(createdHouse.id);
 
         // Redirect user to new listing
-        router.push({ name: 'House details', params: { id: createdHouse.id } });
+        router.push({name: 'House details', params: {id: createdHouse.id}});
 
       } catch (error) {
         console.error(error);
@@ -85,20 +85,20 @@ export default {
       reader.readAsDataURL(this.image);
     },
     // Revert image back to null
-    revertImageUpload(){
+    revertImageUpload() {
       this.image = null;
       this.isShowingPreviewImage = false;
     },
     // Validation check for the form
-    async validationCheck(){
-      if(!this.streetName || !this.houseNumber || !this.postalCode ||
+    async validationCheck() {
+      if (!this.streetName || !this.houseNumber || !this.postalCode ||
           !this.city || !this.price || !this.size ||
           !this.garage || !this.bedrooms || !this.bathrooms ||
           !this.constructionYear || !this.description ||
           this.constructionYear < this.minConstructionYear ||
           this.constructionYear > this.maxConstructionYear ||
           !this.image
-      ){
+      ) {
         this.isFormValid = false
         return
       } else this.isFormValid = true
@@ -118,7 +118,7 @@ export default {
         <p class="black-text-m">Back to overview</p>
       </div>
     </router-link>
-    <p class="black-text-m h1">Create new listing</p>
+    <p class="black-text-m h1 create-new-listing-text">Create new listing</p>
     <form @submit.prevent="validationCheck">
       <div>
         <p class="black-text-m">Street name*</p>
@@ -150,9 +150,10 @@ export default {
             <img src="@/assets/images/ic_upload@3x.png" id="image-upload-icon">
           </label>
         </div>
-        <div v-if="isShowingPreviewImage">
+        <div class="image-preview-container" v-if="isShowingPreviewImage">
           <img :src=imagePreview class="image-preview">
-          <button @click="revertImageUpload" class="small-icon small-icon-container"><img src="@/assets/images/ic_clear_white@3x.png" class="small-icon"></button>
+          <button @click="revertImageUpload" class="small-icon small-icon-container"><img
+              src="@/assets/images/ic_clear_white@3x.png" class="small-icon"></button>
         </div>
       </div>
       <div>
@@ -199,33 +200,33 @@ export default {
 
 <style scoped>
 /*Resizing of back to button to not cover the width of the component*/
-a{
+a {
   display: inline-block;
 }
 
-.row{
+.row {
   justify-content: space-between;
   width: 27.5em;
 }
 
-.small-icon{
+.small-icon {
   width: 2em;
   height: 2em;
 }
 
-.subcomponent{
+.subcomponent {
   background-image: url("@/assets/images/img_background@3x.png");
   background-size: cover;
   background-color: unset;
 }
 
-input{
+input {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
 }
 
-textarea{
+textarea {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
@@ -234,7 +235,7 @@ textarea{
   resize: none;
 }
 
-select{
+select {
   padding: 1.5em;
   border-radius: 5px;
   border-style: none;
@@ -242,12 +243,74 @@ select{
   color: rgb(128, 128, 128);
 }
 
-form{
+form {
   max-width: 27.5em;
 }
 
-option{
+option {
   color: black;
+}
+
+.image-preview-container {
+  width: 10em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.small-icon-container {
+  float: right;
+  position: absolute;
+  margin: 5px;
+}
+
+@media only screen and (max-width: 470px){
+  .long-input{
+    width: 27em;
+  }
+
+  .row{
+    width: 25em;
+  }
+
+  textarea{
+    width: 27em;
+  }
+
+  .upload-button{
+    margin-left: 0;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .row {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .long-input{
+    width: 90%;
+  }
+
+  .short-input {
+    width: 100%;
+  }
+
+  select {
+    width: 93vw;
+  }
+
+  textarea {
+    width: 90%;
+  }
+
+  .black-text-m {
+    margin-block: 1em;
+  }
+
+  .create-new-listing-text {
+    margin-bottom: 2em;
+    text-align: center;
+  }
 }
 
 </style>
