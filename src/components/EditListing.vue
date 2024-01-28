@@ -276,13 +276,13 @@ option {
   color: black;
 }
 
-.image-preview-container{
+.image-preview-container {
   width: 10em;
   display: flex;
   justify-content: flex-end;
 }
 
-.small-icon-container{
+.small-icon-container {
   float: right;
   position: absolute;
   margin: 5px;
@@ -294,7 +294,7 @@ option {
     flex-direction: column;
   }
 
-  .long-input{
+  .long-input {
     width: 90%;
   }
 

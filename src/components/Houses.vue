@@ -127,8 +127,9 @@ export default {
         <img id="search-logo" src="@/assets/images/ic_search@3x.png">
         <input class="house-search" type="text" placeholder="Search for a house" v-model="searchInput"
                @input="handleSearch">
-        <button v-if="searching" class="clear-search-button" @click="clearSearch"><img class="small-icon clear-search-icon"
-                                                                                       src="@/assets/images/ic_clear@3x.png">
+        <button v-if="searching" class="clear-search-button" @click="clearSearch"><img
+            class="small-icon clear-search-icon"
+            src="@/assets/images/ic_clear@3x.png">
         </button>
       </div>
       <div id="price-size-container">
@@ -198,7 +199,7 @@ export default {
 
 <style scoped>
 
-a{
+a {
   align-self: center;
 }
 

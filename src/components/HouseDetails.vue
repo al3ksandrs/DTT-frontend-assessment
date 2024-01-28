@@ -169,8 +169,8 @@ a {
   width: 2em;
 }
 
-@media only screen and (max-width: 940px){
-  .house-full-image{
+@media only screen and (max-width: 940px) {
+  .house-full-image {
     width: 100%;
   }
 }

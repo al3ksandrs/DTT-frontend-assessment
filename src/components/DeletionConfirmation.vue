@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "DeletionConfirmation",
-  methods:{
+  methods: {
     closePopup() {
       this.$emit('close');
     },

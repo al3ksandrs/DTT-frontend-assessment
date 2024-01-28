@@ -287,7 +287,7 @@ option {
     flex-direction: column;
   }
 
-  .long-input{
+  .long-input {
     width: 90%;
   }
 
