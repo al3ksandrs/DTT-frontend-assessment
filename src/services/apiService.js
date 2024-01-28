@@ -1,129 +1,89 @@
 import {router} from "@/index.js";
+import {useAPIkeyStore} from "@/stores/apiKey.js";
 
-export async function fetchHouses(apiKey) {
+// Configuration for API requests.
+const apiConfig = {
+    baseUrl: "https://api.intern.d-tt.nl/api/houses",
+    headers: {
+        'X-Api-Key': '', // Gets filled in in fetchWithApiKey()
+    },
+};
+
+// Fetch JSON data from a given URL with specified options.
+async function fetchJson(url, options) {
     try {
-        const response = await fetch("https://api.intern.d-tt.nl/api/houses", {
-            method: 'GET',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-        });
+        const response = await fetch(url, options);
 
         if (!response.ok) {
-            throw new Error('Failed to fetch houses');
+            throw new Error(`Failed to fetch data from ${url}`);
+        }
+
+        // Check if response is empty
+        if (response.status === 204) {
+            return null;  // Return null for empty responses
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error fetching houses:', error);
+        console.error(`Error fetching data from ${url}:`, error);
         throw error;
     }
 }
 
-export async function createHouse(apiKey, formData) {
-    try {
-        const response = await fetch("https://api.intern.d-tt.nl/api/houses", {
-            method: 'POST',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-            body: formData,
-        });
+// Fetch data from the API with the provided API key.
+async function fetchWithApiKey(url, method, body = null) {
+    const apiKey = useAPIkeyStore().getAPIKey;
+    apiConfig.headers['X-Api-Key'] = apiKey;
 
-        if (!response.ok) {
-            throw new Error('Failed to create house');
-        }
+    const options = {
+        method,
+        headers: apiConfig.headers,
+        body,
+    };
 
-        return await response.json();
-    } catch (error) {
-        console.error('Error creating house:', error);
-        throw error;
-    }
+    return fetchJson(url, options);
 }
 
-export async function uploadImage(apiKey, houseId, image) {
-    try {
-        let formData = new FormData();
-        formData.append('image', image);
-
-        const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${houseId}/upload`, {
-            method: 'POST',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-            body: formData,
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to upload image');
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        throw error;
-    }
+// Get all the house's.
+export async function fetchHouses() {
+    const url = `${apiConfig.baseUrl}`;
+    return fetchWithApiKey(url, 'GET');
 }
 
-export async function fetchHouseDetails(apiKey, houseId) {
-    try {
-        const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${houseId}`, {
-            method: 'GET',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch house details');
-        }
-
-        // Needed to specify the position of house in the array since the GET request returns a single object array instead of only the object.
-        return (await response.json())[0];
-    } catch (error) {
-        console.error('Error fetching house details:', error);
-        throw error;
-    }
+// Create new house.
+export async function createHouse(formData) {
+    const url = `${apiConfig.baseUrl}`;
+    return fetchWithApiKey(url, 'POST', formData);
 }
 
-export async function deleteHouse(apiKey, houseId) {
-    try {
-        const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${houseId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to delete house');
-        }
-    } catch (error) {
-        console.error('Error deleting house:', error);
-        throw error;
-    }
+// Upload image for the corresponding house (houseId).
+export async function uploadImage(houseId, image) {
+    const url = `${apiConfig.baseUrl}/${houseId}/upload`;
+    let formData = new FormData();
+    formData.append('image', image);
+    return fetchWithApiKey(url, 'POST', formData);
 }
 
-export async function editHouse(apiKey, houseId, formData) {
-    try {
-        const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${houseId}`, {
-            method: 'POST',
-            headers: {
-                'X-Api-Key': apiKey,
-            },
-            body: formData,
-        });
+// Get a house's details.
+export async function fetchHouseDetails(houseId) {
+    const url = `${apiConfig.baseUrl}/${houseId}`;
+    const responseData = await fetchWithApiKey(url, 'GET');
+    return responseData[0];
+}
 
-        if (!response.ok) {
-            throw new Error('Failed to edit house');
-        }
+// Delete a house.
+export async function deleteHouse(houseId) {
+    const url = `${apiConfig.baseUrl}/${houseId}`;
+    await fetchWithApiKey(url, 'DELETE');
+}
 
-        // Redirect user to the edited listing
-        router.push({name: 'House details', params: {id: houseId}});
+// Edit a house.
+export async function editHouse(houseId, formData) {
+    const url = `${apiConfig.baseUrl}/${houseId}`;
+    const response = await fetchWithApiKey(url, 'POST', formData);
 
-        return await response.json();
-    } catch (error) {
-        console.error('Error editing house:', error);
-        throw error;
-    }
+    // Redirect user to the edited listing
+    router.push({name: 'House details', params: {id: houseId}});
+
+    return response;
 }

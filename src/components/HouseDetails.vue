@@ -1,5 +1,4 @@
 <script>
-import {useAPIkeyStore} from "@/stores/apiKey.js";
 import {fetchHouseDetails, deleteHouse} from "@/services/apiService.js";
 import DeletionConfirmation from "@/components/DeletionConfirmation.vue";
 import {router} from "@/index.js";
@@ -9,8 +8,6 @@ export default {
   components: {DeletionConfirmation},
   data() {
     return {
-      apiKey: useAPIkeyStore().APIkey,
-
       house: {},
       street: "",
       streetNumber: 0,
@@ -36,7 +33,7 @@ export default {
     async fetchHouseDetails() {
       try {
         const houseId = this.$route.params.id;
-        this.house = await fetchHouseDetails(this.apiKey, houseId);
+        this.house = await fetchHouseDetails(houseId);
 
         // Set house properties
         this.street = this.house.location.street;
@@ -60,7 +57,7 @@ export default {
     async deleteHouse() {
       try {
         const houseId = this.$route.params.id;
-        await deleteHouse(this.apiKey, houseId);
+        await deleteHouse(houseId);
 
         // Redirect user back to houses after deletion
         await router.push({name: 'Houses'});

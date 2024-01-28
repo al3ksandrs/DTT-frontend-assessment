@@ -1,5 +1,4 @@
 <script>
-import {useAPIkeyStore} from "@/stores/apiKey.js";
 import {useHousesStore} from "@/stores/HousesStore.js";
 import {deleteHouse, fetchHouses} from "@/services/apiService.js";
 import {router} from "@/index.js";
@@ -10,7 +9,6 @@ export default {
   components: {DeletionConfirmation},
   data() {
     return {
-      apiKey: useAPIkeyStore().APIkey,
       filteredHouses: [],
       searching: false,
       searchInput: "",
@@ -34,7 +32,7 @@ export default {
     // Get all the houses from the API and fill in the "houses" array with the information
     async fetchHouses() {
       try {
-        const houses = await fetchHouses(this.apiKey);
+        const houses = await fetchHouses();
         useHousesStore().setHouses(houses);
       } catch (error) {
         console.error('Error fetching houses:', error);
@@ -97,10 +95,15 @@ export default {
     // Deletion of a listing
     async deleteHouse(houseId) {
       try {
-        await deleteHouse(this.apiKey, houseId);
+        await deleteHouse(houseId);
 
         // Refresh list after a deletion
-        await this.fetchHouses()
+
+        console.log("Delete houses step 0")
+        const houses = await fetchHouses();
+        console.log("Delete houses step 1")
+        useHousesStore().setHouses(houses);
+        console.log("Delete houses step 2")
       } catch (error) {
         console.error('Error deleting house:', error);
       }

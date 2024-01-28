@@ -1,13 +1,11 @@
 <script>
 import {router} from "@/index.js";
-import {useAPIkeyStore} from "@/stores/apiKey.js";
 import {editHouse, fetchHouseDetails, uploadImage} from "@/services/apiService.js";
 
 export default {
   name: "EditListing",
   data() {
     return {
-      apiKey: useAPIkeyStore().APIkey,
       listingID: this.$route.params.id,
 
       id: null,
@@ -41,7 +39,7 @@ export default {
     // Fetch house's details
     async fetchHouseDetails() {
       try {
-        this.house = await fetchHouseDetails(this.apiKey, this.listingID);
+        this.house = await fetchHouseDetails(this.listingID);
 
         // Set house properties
         this.id = this.house.id;
@@ -83,7 +81,7 @@ export default {
 
         // Upload image using the house's id
         await this.uploadImage(this.listingID);
-        await editHouse(this.apiKey, this.listingID, formData);
+        await editHouse(this.listingID, formData);
 
       } catch (error) {
         console.error(error);
@@ -92,7 +90,7 @@ export default {
     // Upload the image to the new house's ID
     async uploadImage(houseId) {
       try {
-        await uploadImage(this.apiKey, houseId, this.image);
+        await uploadImage(houseId, this.image);
       } catch (error) {
         console.error(error);
       }
