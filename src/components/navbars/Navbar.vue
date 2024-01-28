@@ -1,5 +1,3 @@
-<!-- Navbar.vue -->
-
 <script>
 export default {
   name: "Navbar",
