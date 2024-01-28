@@ -42,21 +42,26 @@ export default {
     },
     // Filter houses based on street, city, size, price, bedrooms and bathrooms
     handleSearch() {
-      this.searching = true;
-      this.filteredHouses = this.houses.filter((house) => {
-        let searchRegex = new RegExp(this.searchInput, "i");
-        return (
-            searchRegex.test(house.location.street) ||
-            searchRegex.test(house.location.city) ||
-            searchRegex.test(house.size) ||
-            searchRegex.test(house.price) ||
-            searchRegex.test(house.rooms.bedroom) ||
-            searchRegex.test(house.rooms.bathroom)
-        );
-      });
+      // Check if the search prompt is empty, if it is we won't display the clear button.
+      if (this.searchInput === "") {
+        this.searching = false;
+      } else {
+        this.searching = true;
+        this.filteredHouses = this.houses.filter((house) => {
+          let searchRegex = new RegExp(this.searchInput, "i");
+          return (
+              searchRegex.test(house.location.street) ||
+              searchRegex.test(house.location.city) ||
+              searchRegex.test(house.size) ||
+              searchRegex.test(house.price) ||
+              searchRegex.test(house.rooms.bedroom) ||
+              searchRegex.test(house.rooms.bathroom)
+          );
+        });
 
-      // Set search result length
-      this.searchResults = this.filteredHouses.length;
+        // Set search result length
+        this.searchResults = this.filteredHouses.length;
+      }
     },
     // Clear search bar and set search result amount back to 0
     clearSearch() {
