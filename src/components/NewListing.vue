@@ -25,8 +25,9 @@ export default {
 
       imagePreview: null,
       isFormValid: true,
+      isConstructionYearValid: true,
       isShowingPreviewImage: false,
-      minConstructionYear: 1950,
+      minConstructionYear: 1901,
       // Current year as max construction year
       maxConstructionYear: new Date().getFullYear(),
     };
@@ -95,13 +96,16 @@ export default {
           !this.city || !this.price || !this.size ||
           !this.garage || !this.bedrooms || !this.bathrooms ||
           !this.constructionYear || !this.description ||
-          this.constructionYear < this.minConstructionYear ||
           this.constructionYear > this.maxConstructionYear ||
           !this.image
       ) {
         this.isFormValid = false
         return
-      } else this.isFormValid = true
+      } else if ( this.constructionYear < this.minConstructionYear ) {
+        this.isConstructionYearValid = false
+        return
+      }
+      else this.isFormValid = true
 
       // If validation passes the creation of the house proceeds
       await this.createHouse()
@@ -194,6 +198,7 @@ export default {
       </div>
       <button type="submit" class="button white-text-m upload-button">Post</button>
       <p v-if="!isFormValid" class="black-text-m error-message">Please fill in all fields correctly</p>
+      <p v-if="!isConstructionYearValid" class="black-text-m error-message">The construction date cannot be under 1901, please fill a valid year</p>
     </form>
   </div>
 </template>
