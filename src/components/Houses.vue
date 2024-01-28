@@ -207,6 +207,12 @@ export default {
         </div>
       </div>
     </router-link>
+    <p class="black-text-m h2 result-image" v-if="searchResults === 0 && searching === true">
+      <div class="no-results-container">
+        <img class="no-results-image" src="@/assets/images/img_empty_houses@3x.png">
+        <p class="black-text-m h2 no-results-text dark-gray">No results found. <br>Please try another keyword.</p>
+      </div>
+    </p>
     <deletion-confirmation v-if="isDeletionConfirmationVisible" @close="isDeletionConfirmationVisible = false"
                            @confirm="deleteHouse(houseToDeleteId)"></deletion-confirmation>
   </div>
@@ -216,6 +222,25 @@ export default {
 
 a {
   align-self: center;
+}
+
+.no-results-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.no-results-text{
+  text-align: center;
+}
+
+.result-image{
+  display: flex;
+  justify-content: center;
+  padding-top: 5em;
+}
+
+.no-results-image{
+  width: 15em;
 }
 
 </style>
