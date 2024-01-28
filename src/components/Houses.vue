@@ -103,7 +103,18 @@ export default {
       } catch (error) {
         console.error('Error deleting house:', error);
       }
-    }
+    },
+    // Format raw price to a more readable one
+    formatPrice(price) {
+      let formattedPrice = price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+
+      return formattedPrice.replace(/,/g, '.');
+    },
   },
 };
 </script>
@@ -169,7 +180,7 @@ export default {
             <p class="black-text-m h2">{{ house.location.street }} {{
                 house.location.houseNumber
               }}{{ house.location.houseNumberAddition }}</p>
-            <p class="black-text-m house-detail-text house-price">€ {{ house.price }}</p>
+            <p class="black-text-m house-detail-text house-price">{{ formatPrice(house.price) }}</p>
             <p class="black-text-m gray normal house-detail-text">{{ house.location.zip }} {{ house.location.city }}</p>
             <div class="house-icon-container">
               <img class="small-icon" src="@/assets/images/ic_bed@3x.png">

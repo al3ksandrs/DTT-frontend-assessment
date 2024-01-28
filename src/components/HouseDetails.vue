@@ -65,6 +65,17 @@ export default {
         console.error('Error deleting house:', error);
       }
     },
+    // Format raw price to a more readable one
+    formatPrice(price) {
+      let formattedPrice = price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+
+      return formattedPrice.replace(/,/g, '.');
+    },
   },
 };
 </script>
@@ -122,7 +133,7 @@ export default {
         <div class="row-container">
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_price@3x.png">
-            <p class="black-text-m dark-gray inline-padding">€ {{ this.price }}</p>
+            <p class="black-text-m dark-gray inline-padding">{{ formatPrice(this.price) }}</p>
           </div>
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_size@3x.png">
