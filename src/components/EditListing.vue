@@ -140,7 +140,7 @@ export default {
 
 <template>
   <div class="subcomponent">
-    <router-link :to="'/house-details/' + listingID">
+    <router-link :to="{ name: 'House details', params: { id: listingID } }">
       <div class="back-to-container">
         <img class="small-icon back-icon" src="../assets/images/ic_back_grey@3x.png">
         <p class="black-text-m">Back to detail page</p>

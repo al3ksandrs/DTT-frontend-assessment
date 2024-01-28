@@ -71,19 +71,19 @@ export default {
 
 <template>
   <div class="subcomponent">
-    <router-link to="/houses">
+    <router-link :to='{name: "Houses"}'>
       <div class="back-to-container">
         <img class="small-icon back-icon" src="@/assets/images/ic_back_grey@3x.png">
         <p class="black-text-m">Back to overview</p>
       </div>
     </router-link>
-    <router-link to="/houses">
+    <router-link :to='{name: "Houses"}'>
       <div class="back-edit-delete-mobile-container">
         <button class="mobile-icon-container">
           <img class="small-icon mobile-icon" src="@/assets/images/ic_back_white@3x.png">
         </button>
         <div v-if="madeByMe" class="edit-delete-container-mobile">
-          <router-link :to="'/edit-listing/' + house.id">
+          <router-link :to="{ name: 'Edit listing', params: { id: house.id } }">
             <button class="mobile-icon-container">
               <img class="small-icon mobile-icon" src="@/assets/images/ic_edit_white@3x.png">
             </button>
@@ -105,7 +105,7 @@ export default {
               this.addition
             }}</p>
           <div class="edit-delete-container">
-            <router-link :to="'/edit-listing/' + house.id">
+            <router-link :to="{ name: 'Edit listing', params: { id: house.id } }">
               <button v-if="madeByMe" class="edit-delete-button">
                 <img class="small-icon" src="@/assets/images/ic_edit@3x.png">
               </button>

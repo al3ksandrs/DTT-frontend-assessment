@@ -113,7 +113,7 @@ export default {
 
 <template>
   <div class="subcomponent">
-    <router-link to="/houses">
+    <router-link :to='{name: "Houses"}'>
       <div class="back-to-container">
         <img class="small-icon back-icon" src="@/assets/images/ic_back_grey@3x.png">
         <p class="black-text-m">Back to overview</p>

@@ -98,12 +98,8 @@ export default {
         await deleteHouse(houseId);
 
         // Refresh list after a deletion
-
-        console.log("Delete houses step 0")
         const houses = await fetchHouses();
-        console.log("Delete houses step 1")
         useHousesStore().setHouses(houses);
-        console.log("Delete houses step 2")
       } catch (error) {
         console.error('Error deleting house:', error);
       }
@@ -117,14 +113,14 @@ export default {
     <!--    Houses header and "create new" button-->
     <div class="houses-top-container">
       <p class="black-text-m h1">Houses</p>
-      <router-link to="/add-listing">
+      <router-link :to="{ name: 'Add listing' }">
         <button class="button white-text-m pc-button">
           <img class="white-plus" src="@/assets/images/ic_plus_white@3x.png" alt="New listing">
           CREATE NEW
         </button>
       </router-link>
     </div>
-    <router-link to="/add-listing">
+    <router-link :to="{ name: 'Add listing' }">
       <button class="mobile-button">
         <img class="gray-plus" src="@/assets/images/ic_plus_grey@3x.png" alt="New listing">
       </button>
@@ -163,7 +159,7 @@ export default {
     <!--    House container, initially loads houses but if user starts searching it loads filteredHouses-->
     <router-link
         v-for="house in (searching ? filteredHouses : houses)"
-        :to="'/house-details/' + house.id"
+        :to="{ name: 'House details', params: { id: house.id } }"
         :key="house.id"
     >
       <div class="house-container">
@@ -186,7 +182,7 @@ export default {
           </div>
         </div>
         <div class="edit-delete-container">
-          <router-link :to="'/edit-listing/' + house.id">
+          <router-link :to="{ name: 'Edit listing', params: { id: house.id } }">
             <button v-if="house.madeByMe" class="edit-delete-button">
               <img class="small-icon edit-delete-icon" src="@/assets/images/ic_edit@3x.png">
             </button>
