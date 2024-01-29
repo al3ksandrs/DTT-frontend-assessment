@@ -7,6 +7,8 @@ export const useAPIkeyStore = defineStore("APIkey", {
         }
     },
     getters: {
-        getAPIKey: (state) => state.APIkey,
+        getAPIKey(){
+            return this.APIkey;
+        },
     },
 });
