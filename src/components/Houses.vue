@@ -224,22 +224,22 @@ a {
   align-self: center;
 }
 
-.no-results-container{
+.no-results-container {
   display: flex;
   flex-direction: column;
 }
 
-.no-results-text{
+.no-results-text {
   text-align: center;
 }
 
-.result-image{
+.result-image {
   display: flex;
   justify-content: center;
   padding-top: 5em;
 }
 
-.no-results-image{
+.no-results-image {
   width: 15em;
 }
 
