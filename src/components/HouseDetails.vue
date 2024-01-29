@@ -117,7 +117,7 @@ export default {
         <div class="row-container">
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_price@3x.png">
-            <p class="black-text-m dark-gray inline-padding">{{ formatPrice(houseDetails.price) }}</p>
+            <p class="black-text-m dark-gray inline-padding details-price">{{ formatPrice(houseDetails.price) }}</p>
           </div>
           <div class="row">
             <img class="detail-icon" src="@/assets/images/ic_size@3x.png">
@@ -154,6 +154,11 @@ export default {
 /*Resizing of back to button to not cover the width of the component*/
 a {
   display: inline-block;
+}
+
+.details-price {
+  display: flex;
+  align-items: center;
 }
 
 .mobile-icon {
