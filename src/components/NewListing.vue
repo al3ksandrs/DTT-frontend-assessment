@@ -159,12 +159,12 @@ export default {
       </div>
       <div>
         <p class="black-text-m">Price*</p>
-        <input v-model="price" class="long-input" type="text" placeholder="e.g. €150.000">
+        <input v-model="price" class="long-input" type="number" placeholder="e.g. €150.000">
       </div>
       <div class="row">
         <div>
           <p class="black-text-m">Size*</p>
-          <input v-model="size" class="short-input" type="text" placeholder="e.g. 60m2">
+          <input v-model="size" class="short-input" type="number" placeholder="e.g. 60m2">
         </div>
         <div>
           <p class="black-text-m">Garage*</p>
@@ -178,16 +178,16 @@ export default {
       <div class="row">
         <div>
           <p class="black-text-m">Bedrooms*</p>
-          <input v-model="bedrooms" class="short-input" type="text" placeholder="Enter amount">
+          <input v-model="bedrooms" class="short-input" type="number" placeholder="Enter amount">
         </div>
         <div>
           <p class="black-text-m">Bathrooms*</p>
-          <input v-model="bathrooms" class="short-input" type="text" placeholder="Enter amount">
+          <input v-model="bathrooms" class="short-input" type="number" placeholder="Enter amount">
         </div>
       </div>
       <div>
         <p class="black-text-m">Construction date*</p>
-        <input v-model="constructionYear" class="long-input" type="text" placeholder="e.g. 1990">
+        <input v-model="constructionYear" class="long-input" type="number" placeholder="e.g. 1990">
       </div>
       <div>
         <p class="black-text-m">Description*</p>
