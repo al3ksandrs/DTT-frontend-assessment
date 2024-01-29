@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     houses() {
-      return useHousesStore().houses;
+      return useHousesStore().getHouses;
     }
   },
   mounted() {

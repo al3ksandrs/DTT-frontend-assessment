@@ -6,6 +6,11 @@ export const useHousesStore = defineStore("houses", {
             houses: []
         }
     },
+    getters: {
+        getHouses() {
+            return this.houses;
+        },
+    },
     actions: {
         setHouses(houses) {
             this.houses = houses;
